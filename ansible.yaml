@@ -1,0 +1,41 @@
+---
+
+- name: Full automation
+  hosts: ansible
+  vars:
+    image: nginx
+    custom_image: cssp007143/my_custom_nginx:v1.0
+    docker_hub_username: cssp007143
+    docker_hub_password: Pandey@2020
+  
+  tasks:
+    - name: Pull nginx image
+      docker_image:
+        name: '{{ image }}'
+        source: pull
+      
+    - name: Create custom nginx docker image
+      docker_image:
+        path: .
+        name: '{{ custom_image }}'
+        
+    - name: Login to docker hub
+      docker_login:
+        username: '{{ docker_hub_username }}'
+        password: '{{ docker_hub_password }}'
+        
+    - name: Push to docker hub
+      docker_image:
+        name: '{{ custom_image }}'
+        repository: '{{ custom_image }}'
+        push: yes
+        source: local
+        
+    - name: Logout to Docker hub
+      docker_login:
+        state: absent
+        
+    - name: Deploy nginx on k8s
+      k8s:
+        state: present
+        src: nginx.yaml
