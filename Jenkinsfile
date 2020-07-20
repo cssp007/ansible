@@ -15,7 +15,7 @@ pipeline {
         stage('SSH') {
             steps {
                script {
-                   sh 'ssh root@somnath.cssp.lab'
+                   sh ssh root@somnath.cssp.lab "ansible-playbook ansible.yaml"
               }
           }
       }
