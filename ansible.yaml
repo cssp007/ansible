@@ -16,7 +16,7 @@
       
     - name: Create custom nginx docker image
       docker_image:
-        path: .
+        build.path: .
         name: '{{ custom_image }}'
         
     - name: Login to docker hub
