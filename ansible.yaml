@@ -16,9 +16,9 @@
       
     - name: Create custom nginx docker image
       docker_image:
-        build:
-          path: .
         name: '{{ custom_image }}'
+        build:
+          path: /var/lib/jenkins/workspace/ansible
         
     - name: Login to docker hub
       docker_login:
